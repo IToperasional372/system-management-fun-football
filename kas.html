@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buku Kas & Transparansi Keuangan • VFC biMBA AIUEO</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+    <!-- html2pdf -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'Inter', 'sans-serif']
+                    },
+                    colors: {
+                        maroon: {
+                            50: '#fdf2f3',
+                            100: '#fce7e9',
+                            600: '#9b1b2b',
+                            700: '#801321',
+                            800: '#690f1b',
+                            900: '#4e0a13'
+                        },
+                        trophy: {
+                            300: '#fde047',
+                            400: '#facc15',
+                            500: '#eab308'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .maroon-stripes {
+            background-color: #6b0f1a;
+            background-image: repeating-linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0.03) 0px,
+                rgba(255, 255, 255, 0.03) 28px,
+                transparent 28px,
+                transparent 56px
+            );
+        }
+        .fade-in {
+            animation: fadeIn 0.25s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .logo-shadow {
+            filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35));
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen antialiased">
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed top-4 right-4 z-[120] flex flex-col gap-2 max-w-sm w-[calc(100%-2rem)] pointer-events-none"></div>
+
+    <!-- HEADER MERAH MARUN -->
+    <header class="maroon-stripes text-white pt-5 pb-24 px-4 relative overflow-hidden shadow-lg">
+        <div class="absolute -right-10 -top-10 text-white/5 text-[180px] pointer-events-none select-none">
+            <i class="fa-solid fa-wallet"></i>
+        </div>
+
+        <div class="max-w-5xl mx-auto relative z-10">
+            <!-- Top Bar: Satu Baris Ringkas dengan Ikon Status di Kanan Atas -->
+            <div class="flex items-center justify-between gap-2 mb-6 flex-nowrap overflow-x-auto">
+                <span class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-[10px] sm:text-xs font-semibold tracking-wide text-trophy-400 uppercase whitespace-nowrap shrink-0">
+                    <i class="fa-solid fa-shield-halved"></i> Transparansi Keuangan • VFC YPAI 1996
+                </span>
+                <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                    <span id="admin-active-pill" class="hidden inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-emerald-600/90 text-white text-[11px] sm:text-xs font-bold whitespace-nowrap">
+                        <i class="fa-solid fa-user-check"></i> <span id="admin-active-name">Pengurus</span>
+                    </span>
+                    <button type="button" id="btn-login-pengurus" onclick="openLoginModal()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 border border-white/20 text-white text-[11px] sm:text-xs font-bold transition cursor-pointer whitespace-nowrap">
+                        <i class="fa-solid fa-lock text-trophy-400"></i> Login Pengurus
+                    </button>
+                    <button type="button" id="btn-logout-pengurus" onclick="logoutPengurus()" class="hidden inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-[11px] sm:text-xs font-bold transition cursor-pointer whitespace-nowrap">
+                        <i class="fa-solid fa-right-from-bracket"></i> Keluar
+                    </button>
+                    <span id="cloud-sync-badge" title="Menghubungkan sinkronisasi online..." class="w-7 h-7 rounded-full bg-black/25 border border-white/20 inline-flex items-center justify-center shrink-0">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Title & Logos -->
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+                <div class="flex items-center gap-4">
+                    <div id="kas-vfc-logo-slot" class="w-16 h-16 shrink-0 logo-shadow flex items-center justify-center">
+                        <svg viewBox="0 0 120 120" class="w-full h-full">
+                            <path d="M22 22 L60 12 L98 22 L98 66 C98 92 60 110 60 110 C60 110 22 92 22 66 Z" fill="#1e3a8a" stroke="#dc2626" stroke-width="5"/>
+                            <path d="M26 26 L60 17 L94 26 L94 40 L26 40 Z" fill="#dc2626"/>
+                            <text x="60" y="35" text-anchor="middle" fill="#fde047" font-size="10" font-weight="800">VOLUNTEER</text>
+                            <circle cx="60" cy="64" r="17" fill="#f97316" stroke="#1e293b" stroke-width="2"/>
+                            <circle cx="54" cy="60" r="2.5" fill="#1e293b"/>
+                            <circle cx="66" cy="60" r="2.5" fill="#1e293b"/>
+                            <text x="60" y="102" text-anchor="middle" fill="#fde047" font-size="8.5" font-weight="800">YPAI 1996</text>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="font-display text-2xl sm:text-3xl font-extrabold tracking-tight">
+                            Buku Kas & <span class="text-trophy-400">Transparansi Keuangan</span>
+                        </h1>
+                        <p class="text-xs sm:text-sm text-red-100 mt-1">
+                            Fun Football Relawan biMBA AIUEO • Terbuka untuk seluruh anggota, dikelola bersama oleh pengurus
+                        </p>
+                    </div>
+                </div>
+                <div class="inline-flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-black/25 border border-white/15 text-xs">
+                    <i class="fa-solid fa-building-columns text-trophy-400"></i>
+                    <div class="text-left">
+                        <span class="text-[10px] text-red-200 block uppercase font-bold">Pemegang Kas Saat Ini</span>
+                        <strong id="header-holder-name" class="text-white">Bendahara VFC biMBA</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="max-w-5xl mx-auto px-4 -mt-16 pb-16 relative z-20 space-y-6">
+
+        <!-- KPI SUMMARY CARDS -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-emerald-900 text-white p-5 rounded-2xl shadow-lg border border-emerald-800">
+                <div class="flex items-center justify-between">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-200">Saldo Kas Saat Ini</span>
+                    <i class="fa-solid fa-vault text-trophy-400"></i>
+                </div>
+                <p id="kpi-current-balance" class="font-display text-2xl sm:text-3xl font-extrabold text-trophy-400 mt-2">Rp 0</p>
+                <p class="text-[11px] text-emerald-200 mt-1">Saldo awal + pemasukan − pengeluaran</p>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl shadow-md border border-slate-200">
+                <div class="flex items-center justify-between">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Saldo Awal Terkumpul</span>
+                    <i class="fa-solid fa-piggy-bank text-slate-400"></i>
+                </div>
+                <p id="kpi-opening-balance" class="font-display text-2xl font-extrabold text-slate-900 mt-2">Rp 0</p>
+                <p id="kpi-opening-meta" class="text-[11px] text-slate-500 mt-1">Per tanggal -</p>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl shadow-md border border-slate-200">
+                <div class="flex items-center justify-between">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Total Pemasukan</span>
+                    <i class="fa-solid fa-arrow-trend-up text-emerald-600"></i>
+                </div>
+                <p id="kpi-total-in" class="font-display text-2xl font-extrabold text-emerald-700 mt-2">Rp 0</p>
+                <p id="kpi-in-count" class="text-[11px] text-slate-500 mt-1">0 transaksi masuk</p>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl shadow-md border border-slate-200">
+                <div class="flex items-center justify-between">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Total Pengeluaran</span>
+                    <i class="fa-solid fa-arrow-trend-down text-red-600"></i>
+                </div>
+                <p id="kpi-total-out" class="font-display text-2xl font-extrabold text-red-600 mt-2">Rp 0</p>
+                <p id="kpi-out-count" class="text-[11px] text-slate-500 mt-1">0 transaksi keluar</p>
+            </div>
+        </section>
+
+        <!-- PANEL INPUT PENGURUS (Hanya tampil saat sudah Login Pengurus) -->
+        <section id="admin-controls-section" class="hidden bg-white rounded-3xl shadow-md border-2 border-maroon-100 p-5 sm:p-6 fade-in">
+            <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-100">
+                <div>
+                    <span class="text-[11px] font-extrabold uppercase tracking-wider text-maroon-700">Mode Pengurus Aktif</span>
+                    <h2 class="font-display text-lg font-extrabold text-slate-900">Catat Transaksi Kas & Pengaturan Saldo</h2>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button type="button" onclick="openOpeningBalanceModal()" class="px-3 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-bold cursor-pointer">
+                        <i class="fa-solid fa-sliders mr-1"></i> Atur Saldo Awal Terkumpul
+                    </button>
+                    <button type="button" onclick="exportBackupJSON()" class="px-3 py-1.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold cursor-pointer">
+                        <i class="fa-solid fa-download mr-1"></i> Backup .JSON
+                    </button>
+                    <label class="px-3 py-1.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold cursor-pointer">
+                        <i class="fa-solid fa-upload mr-1"></i> Impor .JSON
+                        <input type="file" accept=".json" class="hidden" onchange="importBackupJSON(event)">
+                    </label>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 mt-4">
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-500 mb-1">Tanggal</label>
+                    <input type="date" id="tx-date" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm font-medium">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-500 mb-1">Jenis Arus</label>
+                    <select id="tx-type" onchange="updateCategoryOptions()" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold bg-white">
+                        <option value="masuk">+ Pemasukan</option>
+                        <option value="keluar">- Pengeluaran</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-500 mb-1">Kategori</label>
+                    <select id="tx-category" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm bg-white"></select>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-500 mb-1">Metode</label>
+                    <select id="tx-method" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm bg-white">
+                        <option value="Transfer BCA">Transfer BCA</option>
+                        <option value="Transfer Mandiri">Transfer Mandiri</option>
+                        <option value="Tunai">Tunai / Cash</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-500 mb-1">Nominal (Rp)</label>
+                    <input type="number" id="tx-amount" min="1000" step="1000" placeholder="50000" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold">
+                </div>
+                <div class="flex items-end">
+                    <button type="button" onclick="addTransaction()" class="w-full py-2.5 px-4 rounded-xl bg-maroon-700 hover:bg-maroon-800 text-white text-xs sm:text-sm font-bold shadow-sm transition cursor-pointer">
+                        <i class="fa-solid fa-plus mr-1"></i> Simpan Kas
+                    </button>
+                </div>
+            </div>
+            <div class="mt-3">
+                <label class="block text-[11px] font-bold text-slate-500 mb-1">Keterangan Transaksi</label>
+                <input type="text" id="tx-desc" placeholder="Contoh: Sewa lapangan 2 jam / Air mineral 2 dus / Setoran HTM Match..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm">
+            </div>
+        </section>
+
+        <!-- BAR PROPORSI ARUS KAS & FILTER PUBLIK -->
+        <section class="bg-white rounded-3xl shadow-md border border-slate-200 p-5 sm:p-6 space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                    <h2 class="font-display text-lg font-extrabold text-slate-900">Riwayat Mutasi Kas Komunitas</h2>
+                    <p class="text-xs text-slate-500">Setoran HTM yang diverifikasi Lunas di Form Pendaftaran otomatis masuk dengan lencana <span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">⚡ Auto Form</span>.</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button type="button" onclick="copyReportToWA()" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm cursor-pointer">
+                        <i class="fa-brands fa-whatsapp mr-1"></i> Salin Laporan WA
+                    </button>
+                    <button type="button" onclick="openPrintKasModal()" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-sm cursor-pointer">
+                        <i class="fa-solid fa-print mr-1 text-trophy-400"></i> Print / PDF Laporan
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bar Proporsi -->
+            <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200/80">
+                <div class="flex justify-between text-xs font-bold mb-1.5">
+                    <span class="text-emerald-700">Pemasukan: <span id="bar-in-pct">0%</span></span>
+                    <span class="text-red-600">Pengeluaran: <span id="bar-out-pct">0%</span></span>
+                </div>
+                <div class="w-full h-3 rounded-full bg-slate-200 overflow-hidden flex">
+                    <div id="bar-in-fill" class="bg-emerald-500 h-full transition-all duration-500" style="width: 50%"></div>
+                    <div id="bar-out-fill" class="bg-red-500 h-full transition-all duration-500" style="width: 50%"></div>
+                </div>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="flex flex-wrap items-center gap-2">
+                <input type="text" id="filter-search" oninput="renderApp()" placeholder="Cari keterangan / pencatat..." class="px-3.5 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm flex-1 min-w-[180px]">
+                <select id="filter-month" onchange="renderApp()" class="px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm bg-white font-semibold">
+                    <option value="all">Semua Bulan</option>
+                </select>
+                <select id="filter-type" onchange="renderApp()" class="px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm bg-white font-semibold">
+                    <option value="all">Semua Jenis</option>
+                    <option value="masuk">Hanya Pemasukan</option>
+                    <option value="keluar">Hanya Pengeluaran</option>
+                </select>
+            </div>
+
+            <!-- Tabel Mutasi -->
+            <div class="overflow-x-auto border border-slate-200 rounded-2xl">
+                <table class="w-full text-left border-collapse min-w-[720px]">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">
+                            <th class="py-3 px-4">Tanggal</th>
+                            <th class="py-3 px-4">Kategori & Keterangan</th>
+                            <th class="py-3 px-4">Dicatat Oleh</th>
+                            <th class="py-3 px-4 text-right">Masuk</th>
+                            <th class="py-3 px-4 text-right">Keluar</th>
+                            <th class="py-3 px-4 text-right">Saldo Berjalan</th>
+                            <th id="th-admin-action" class="hidden py-3 px-4 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tx-tbody" class="divide-y divide-slate-100 text-xs sm:text-sm">
+                        <!-- Diisi otomatis via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer class="text-center text-xs text-slate-400">
+            © 2026 Volunteer Football Community • biMBA AIUEO / YPAI 1996
+        </footer>
+    </main>
+
+    <!-- MODAL LOGIN PENGURUS -->
+    <div id="login-modal" class="hidden fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-display text-lg font-extrabold text-slate-900">Login Pengurus Kas</h3>
+                <button type="button" onclick="closeLoginModal()" class="text-slate-400 hover:text-slate-600 cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Nama / Jabatan Pengurus</label>
+                    <input type="text" id="login-name" placeholder="Contoh: Bendahara / Ketua" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">PIN Pengurus (Default: 1996)</label>
+                    <input type="password" id="login-pin" placeholder="Masukkan PIN..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-bold tracking-widest">
+                </div>
+                <p id="err-login" class="hidden text-xs font-bold text-red-600">Nama wajib diisi dan PIN harus sesuai.</p>
+                <button type="button" onclick="submitLogin()" class="w-full py-2.5 rounded-xl bg-maroon-700 hover:bg-maroon-800 text-white text-sm font-bold cursor-pointer">
+                    Masuk sebagai Pengurus
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ATUR SALDO AWAL TERKUMPUL -->
+    <div id="opening-modal" class="hidden fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-display text-lg font-extrabold text-slate-900">Atur Saldo Awal Terkumpul</h3>
+                <button type="button" onclick="closeOpeningBalanceModal()" class="text-slate-400 hover:text-slate-600 cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Nominal Saldo Awal Terkumpul (Rp)</label>
+                    <input type="number" id="open-amount" min="0" step="1000" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-bold">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Per Tanggal</label>
+                    <input type="date" id="open-date" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Nama Pemegang Kas</label>
+                    <input type="text" id="open-holder" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Catatan Saldo Awal</label>
+                    <input type="text" id="open-note" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Ganti PIN Pengurus (Opsional)</label>
+                    <input type="password" id="open-new-pin" placeholder="Kosongkan jika tetap" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm">
+                </div>
+                <button type="button" onclick="saveOpeningBalance()" class="w-full py-2.5 rounded-xl bg-maroon-700 hover:bg-maroon-800 text-white text-sm font-bold cursor-pointer mt-2">
+                    Simpan Saldo Awal Online
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PRATINJAU WHATSAPP -->
+    <div id="wa-modal" class="hidden fixed inset-0 z-[70] bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden">
+            <div class="bg-emerald-700 text-white px-5 py-3.5 flex items-center justify-between">
+                <h3 class="font-display text-base font-extrabold"><i class="fa-brands fa-whatsapp mr-1.5"></i> Laporan Kas untuk WhatsApp</h3>
+                <button type="button" onclick="closeWAModal()" class="text-white/80 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-5">
+                <textarea id="wa-textarea" rows="12" class="w-full p-3.5 rounded-xl border border-slate-300 bg-slate-50 font-mono text-xs text-slate-800"></textarea>
+                <div class="mt-4 flex justify-end gap-2">
+                    <button type="button" onclick="copyText(document.getElementById('wa-textarea').value, 'Laporan Kas WA')" class="px-4 py-2 rounded-xl bg-slate-800 text-white text-xs font-bold cursor-pointer">
+                        <i class="fa-regular fa-copy mr-1"></i> Salin Teks
+                    </button>
+                    <a id="wa-send-link" href="#" target="_blank" rel="noopener" class="px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold inline-flex items-center gap-1.5">
+                        <i class="fa-brands fa-whatsapp"></i> Kirim ke WA
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PRATINJAU CETAK & PDF -->
+    <div id="print-modal" class="hidden fixed inset-0 z-[70] bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden">
+            <div class="bg-slate-900 text-white px-5 py-3.5 flex flex-wrap items-center justify-between gap-2">
+                <h3 class="font-display text-sm sm:text-base font-extrabold"><i class="fa-solid fa-print text-trophy-400 mr-1.5"></i> Pratinjau Laporan Kas</h3>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="downloadPrintHTML()" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold cursor-pointer">
+                        <i class="fa-solid fa-file-code mr-1"></i> Unduh .HTML
+                    </button>
+                    <button type="button" id="btn-pdf-kas" onclick="exportKasPDF()" class="px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-extrabold cursor-pointer">
+                        <i class="fa-solid fa-file-pdf mr-1"></i> Simpan PDF / Cetak
+                    </button>
+                    <button type="button" onclick="closePrintModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center cursor-pointer">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-4 sm:p-6 bg-slate-200 overflow-y-auto flex-1">
+                <div id="print-sheet" class="bg-white max-w-3xl mx-auto p-6 sm:p-8 rounded-xl shadow-md text-slate-900"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- JAVASCRIPT UTAMA BUKU KAS                                                 -->
+    <!-- ========================================================================= -->
+    <script>
+        const defaultConfig = {
+            openingBalance: 150000,
+            openingDate: '2026-11-01',
+            holder: 'Satria Wijaya Dipa (Bendahara)',
+            note: 'Saldo kas terkumpul periode sebelumnya',
+            pin: '1996'
+        };
+
+        var kasConfig = JSON.parse(JSON.stringify(defaultConfig));
+        var transactions = [];
+        let currentAdmin = '';
+        let pendingDeleteTxId = null;
+        let lastPrintHTML = '';
+
+        // Penghubung aman untuk modul sinkronisasi online
+        window.getDefaultKasConfig = function() {
+            return JSON.parse(JSON.stringify(defaultConfig));
+        };
+
+        window.applyCloudKasConfig = function(data) {
+            kasConfig = { ...defaultConfig, ...(data || {}) };
+            renderApp();
+        };
+
+        window.applyCloudTransactions = function(list) {
+            transactions = Array.isArray(list) ? list : [];
+            renderApp();
+        };
+
+        function formatRupiah(n) {
+            return 'Rp ' + (Number(n) || 0).toLocaleString('id-ID');
+        }
+
+        function formatDateID(iso) {
+            if (!iso) return '-';
+            const d = new Date(iso + 'T00:00:00');
+            if (isNaN(d.getTime())) return iso;
+            return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const colors = type === 'error'
+                ? 'bg-red-600 text-white border-red-700'
+                : type === 'info'
+                    ? 'bg-slate-800 text-white border-slate-700'
+                    : 'bg-emerald-600 text-white border-emerald-700';
+            toast.className = `pointer-events-auto flex items-center gap-2 px-4 py-3 rounded-xl border shadow-lg text-xs sm:text-sm font-semibold fade-in ${colors}`;
+            toast.innerHTML = `<i class="fa-solid ${type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check'}"></i><span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.25s';
+                setTimeout(() => toast.remove(), 260);
+            }, 3200);
+        }
+
+        function copyText(text, label = 'Teks') {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                document.execCommand('copy');
+                showToast(`${label} berhasil disalin!`, 'success');
+            } catch (e) {
+                showToast('Gagal menyalin otomatis.', 'error');
+            }
+            document.body.removeChild(ta);
+        }
+
+        // --- AUTH PENGURUS ---
+        function openLoginModal() {
+            document.getElementById('err-login').classList.add('hidden');
+            document.getElementById('login-pin').value = '';
+            document.getElementById('login-modal').classList.remove('hidden');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('login-modal').classList.add('hidden');
+        }
+
+        function submitLogin() {
+            const name = document.getElementById('login-name').value.trim();
+            const pin = document.getElementById('login-pin').value.trim();
+            if (!name || pin !== kasConfig.pin) {
+                document.getElementById('err-login').classList.remove('hidden');
+                return;
+            }
+            currentAdmin = name;
+            closeLoginModal();
+            updateAuthUI();
+            renderApp();
+            showToast(`Login pengurus berhasil sebagai ${currentAdmin}.`, 'success');
+        }
+
+        function logoutPengurus() {
+            currentAdmin = '';
+            updateAuthUI();
+            renderApp();
+            showToast('Anda kembali ke Mode Pantau Publik.', 'info');
+        }
+
+        function updateAuthUI() {
+            const isAdmin = Boolean(currentAdmin);
+            document.getElementById('admin-controls-section').classList.toggle('hidden', !isAdmin);
+            document.getElementById('btn-login-pengurus').classList.toggle('hidden', isAdmin);
+            document.getElementById('btn-logout-pengurus').classList.toggle('hidden', !isAdmin);
+            document.getElementById('admin-active-pill').classList.toggle('hidden', !isAdmin);
+            document.getElementById('admin-active-name').textContent = currentAdmin;
+            document.getElementById('th-admin-action').classList.toggle('hidden', !isAdmin);
+        }
+
+        // --- KATEGORI INPUT ---
+        function updateCategoryOptions() {
+            const type = document.getElementById('tx-type').value;
+            const catEl = document.getElementById('tx-category');
+            const options = type === 'masuk'
+                ? ['Setoran HTM Match', 'Iuran Kas Anggota', 'Donasi / Sponsor', 'Pemasukan Lainnya']
+                : ['Sewa Lapangan', 'Konsumsi / Air Mineral', 'Perlengkapan (Bola/Rompi)', 'Operasional Lainnya'];
+            catEl.innerHTML = options.map(o => `<option value="${o}">${o}</option>`).join('');
+        }
+
+        // --- CRUD TRANSAKSI ---
+        async function addTransaction() {
+            const date = document.getElementById('tx-date').value;
+            const type = document.getElementById('tx-type').value;
+            const category = document.getElementById('tx-category').value;
+            const method = document.getElementById('tx-method').value;
+            const desc = document.getElementById('tx-desc').value.trim();
+            const amount = parseInt(document.getElementById('tx-amount').value, 10);
+
+            if (!date || !desc || !amount || amount <= 0) {
+                showToast('Lengkapi tanggal, keterangan, dan nominal yang valid.', 'error');
+                return;
+            }
+
+            const newTx = {
+                id: 'TX-' + Date.now(),
+                date,
+                type,
+                category,
+                method,
+                desc,
+                amount,
+                recordedBy: currentAdmin || 'Pengurus'
+            };
+
+            if (window.cloudKas && window.cloudKas.isReady()) {
+                const ok = await window.cloudKas.saveTransaction(newTx);
+                if (!ok) {
+                    showToast('Gagal menyimpan transaksi online.', 'error');
+                    return;
+                }
+            } else {
+                transactions.push(newTx);
+                renderApp();
+            }
+
+            document.getElementById('tx-desc').value = '';
+            document.getElementById('tx-amount').value = '';
+            showToast('Transaksi kas berhasil dicatat & tersinkronisasi online!', 'success');
+        }
+
+        function requestDeleteTx(id) {
+            pendingDeleteTxId = id;
+            renderApp();
+        }
+
+        async function confirmDeleteTx(id) {
+            pendingDeleteTxId = null;
+            if (window.cloudKas && window.cloudKas.isReady()) {
+                const ok = await window.cloudKas.deleteTransaction(id);
+                if (!ok) {
+                    showToast('Gagal menghapus transaksi online.', 'error');
+                    return;
+                }
+            } else {
+                transactions = transactions.filter(t => t.id !== id);
+                renderApp();
+            }
+            showToast('Transaksi berhasil dihapus dari buku kas.', 'success');
+        }
+
+        // --- SALDO AWAL ---
+        function openOpeningBalanceModal() {
+            document.getElementById('open-amount').value = kasConfig.openingBalance;
+            document.getElementById('open-date').value = kasConfig.openingDate;
+            document.getElementById('open-holder').value = kasConfig.holder;
+            document.getElementById('open-note').value = kasConfig.note;
+            document.getElementById('open-new-pin').value = '';
+            document.getElementById('opening-modal').classList.remove('hidden');
+        }
+
+        function closeOpeningBalanceModal() {
+            document.getElementById('opening-modal').classList.add('hidden');
+        }
+
+        async function saveOpeningBalance() {
+            const amount = parseInt(document.getElementById('open-amount').value, 10);
+            const date = document.getElementById('open-date').value;
+            const holder = document.getElementById('open-holder').value.trim();
+            const note = document.getElementById('open-note').value.trim();
+            const newPin = document.getElementById('open-new-pin').value.trim();
+
+            if (isNaN(amount) || amount < 0 || !date) {
+                showToast('Masukkan nominal saldo awal & tanggal yang valid.', 'error');
+                return;
+            }
+
+            const updatedConfig = {
+                ...kasConfig,
+                openingBalance: amount,
+                openingDate: date,
+                holder: holder || kasConfig.holder,
+                note: note || kasConfig.note,
+                pin: newPin ? newPin : kasConfig.pin
+            };
+
+            kasConfig = updatedConfig;
+            if (window.cloudKas && window.cloudKas.isReady()) {
+                await window.cloudKas.saveConfig(updatedConfig);
+            }
+            closeOpeningBalanceModal();
+            renderApp();
+            showToast('Saldo awal berhasil diperbarui secara online!', 'success');
+        }
+
+        // --- BACKUP & IMPOR JSON ---
+        function exportBackupJSON() {
+            const payload = { exportedAt: new Date().toISOString(), exportedBy: currentAdmin || 'Pengurus', kasConfig, transactions };
+            const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Backup-BukuKas-VFC-biMBA-${new Date().toISOString().slice(0, 10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('File backup (.JSON) berhasil diunduh!', 'success');
+        }
+
+        function importBackupJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.kasConfig && Array.isArray(data.transactions)) {
+                        if (window.cloudKas && window.cloudKas.isReady()) {
+                            await window.cloudKas.importAll(data.kasConfig, data.transactions);
+                        } else {
+                            kasConfig = data.kasConfig;
+                            transactions = data.transactions;
+                            renderApp();
+                        }
+                        showToast('Backup buku kas berhasil dipulihkan!', 'success');
+                    } else {
+                        showToast('Format file backup tidak valid.', 'error');
+                    }
+                } catch (err) {
+                    showToast('Gagal membaca file JSON.', 'error');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        // --- RENDER UTAMA ---
+        function getSortedWithRunningBalance() {
+            const sorted = [...transactions].sort((a, b) => (a.date || '').localeCompare(b.date || '') || (a.id || '').localeCompare(b.id || ''));
+            let running = Number(kasConfig.openingBalance) || 0;
+            return sorted.map(t => {
+                const amt = Number(t.amount) || 0;
+                running += t.type === 'masuk' ? amt : -amt;
+                return { ...t, runningBalance: running };
+            });
+        }
+
+        function updateMonthDropdown() {
+            const sel = document.getElementById('filter-month');
+            const prevVal = sel.value;
+            const months = Array.from(new Set(transactions.map(t => (t.date || '').slice(0, 7)).filter(Boolean))).sort().reverse();
+            sel.innerHTML = `<option value="all">Semua Bulan</option>` + months.map(m => `<option value="${m}">${m}</option>`).join('');
+            if (months.includes(prevVal)) sel.value = prevVal;
+        }
+
+        function renderApp() {
+            updateMonthDropdown();
+
+            const allWithBal = getSortedWithRunningBalance();
+            const totalIn = transactions.filter(t => t.type === 'masuk').reduce((s, t) => s + (Number(t.amount) || 0), 0);
+            const totalOut = transactions.filter(t => t.type === 'keluar').reduce((s, t) => s + (Number(t.amount) || 0), 0);
+            const currentBalance = (Number(kasConfig.openingBalance) || 0) + totalIn - totalOut;
+
+            document.getElementById('header-holder-name').textContent = kasConfig.holder;
+            document.getElementById('kpi-current-balance').textContent = formatRupiah(currentBalance);
+            document.getElementById('kpi-opening-balance').textContent = formatRupiah(kasConfig.openingBalance);
+            document.getElementById('kpi-opening-meta').textContent = `Per ${formatDateID(kasConfig.openingDate)} • ${kasConfig.note}`;
+            document.getElementById('kpi-total-in').textContent = formatRupiah(totalIn);
+            document.getElementById('kpi-in-count').textContent = `${transactions.filter(t => t.type === 'masuk').length} transaksi masuk`;
+            document.getElementById('kpi-total-out').textContent = formatRupiah(totalOut);
+            document.getElementById('kpi-out-count').textContent = `${transactions.filter(t => t.type === 'keluar').length} transaksi keluar`;
+
+            const totalFlow = totalIn + totalOut;
+            const inPct = totalFlow > 0 ? Math.round((totalIn / totalFlow) * 100) : 50;
+            const outPct = totalFlow > 0 ? 100 - inPct : 50;
+            document.getElementById('bar-in-pct').textContent = inPct + '%';
+            document.getElementById('bar-out-pct').textContent = outPct + '%';
+            document.getElementById('bar-in-fill').style.width = inPct + '%';
+            document.getElementById('bar-out-fill').style.width = outPct + '%';
+
+            // Filter tabel
+            const q = (document.getElementById('filter-search').value || '').toLowerCase();
+            const fMonth = document.getElementById('filter-month').value;
+            const fType = document.getElementById('filter-type').value;
+
+            const filtered = allWithBal.filter(t => {
+                if (fMonth !== 'all' && !(t.date || '').startsWith(fMonth)) return false;
+                if (fType !== 'all' && t.type !== fType) return false;
+                if (q && !((t.desc || '').toLowerCase().includes(q) || (t.category || '').toLowerCase().includes(q) || (t.recordedBy || '').toLowerCase().includes(q))) return false;
+                return true;
+            }).reverse();
+
+            const isAdmin = Boolean(currentAdmin);
+            const tbody = document.getElementById('tx-tbody');
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="${isAdmin ? 7 : 6}" class="py-8 text-center text-slate-400 text-xs">Belum ada transaksi yang sesuai filter.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(t => {
+                const isAuto = Boolean(t.sourcePlayerId || (t.id && t.id.startsWith('HTM-')));
+                const autoBadge = isAuto
+                    ? `<span class="ml-1.5 px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-extrabold">⚡ Auto Form</span>`
+                    : '';
+
+                const actionTd = isAdmin
+                    ? `<td class="py-3 px-4 text-center">
+                        ${pendingDeleteTxId === t.id
+                            ? `<button type="button" onclick="confirmDeleteTx('${t.id}')" class="px-2 py-1 rounded-lg bg-red-600 text-white text-[11px] font-bold cursor-pointer">Hapus?</button>`
+                            : `<button type="button" onclick="requestDeleteTx('${t.id}')" class="p-1.5 text-red-500 hover:bg-red-50 rounded-lg cursor-pointer"><i class="fa-solid fa-trash"></i></button>`}
+                       </td>`
+                    : '';
+
+                return `
+                    <tr class="hover:bg-slate-50/70">
+                        <td class="py-3 px-4 whitespace-nowrap text-xs font-semibold text-slate-600">${formatDateID(t.date)}</td>
+                        <td class="py-3 px-4">
+                            <div class="flex flex-wrap items-center">
+                                <span class="text-[11px] font-extrabold uppercase ${t.type === 'masuk' ? 'text-emerald-700' : 'text-red-600'}">${t.category}</span>
+                                ${autoBadge}
+                            </div>
+                            <p class="font-semibold text-slate-800 mt-0.5">${t.desc}</p>
+                            <span class="text-[10px] text-slate-400">${t.method || '-'}</span>
+                        </td>
+                        <td class="py-3 px-4 text-xs text-slate-600 font-medium">${t.recordedBy || '-'}</td>
+                        <td class="py-3 px-4 text-right font-bold text-emerald-700 whitespace-nowrap">${t.type === 'masuk' ? formatRupiah(t.amount) : '-'}</td>
+                        <td class="py-3 px-4 text-right font-bold text-red-600 whitespace-nowrap">${t.type === 'keluar' ? formatRupiah(t.amount) : '-'}</td>
+                        <td class="py-3 px-4 text-right font-extrabold text-slate-900 whitespace-nowrap">${formatRupiah(t.runningBalance)}</td>
+                        ${actionTd}
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // --- LAPORAN WA & PRINT PDF ---
+        function copyReportToWA() {
+            const totalIn = transactions.filter(t => t.type === 'masuk').reduce((s, t) => s + (Number(t.amount) || 0), 0);
+            const totalOut = transactions.filter(t => t.type === 'keluar').reduce((s, t) => s + (Number(t.amount) || 0), 0);
+            const saldoAkhir = (Number(kasConfig.openingBalance) || 0) + totalIn - totalOut;
+            const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+
+            let txt = `*LAPORAN TRANSPARANSI KAS FUN FOOTBALL biMBA*\n`;
+            txt += `Volunteer Football Community (YPAI 1996)\n`;
+            txt += `Update: ${today}\n`;
+            txt += `Pemegang Kas: ${kasConfig.holder}\n\n`;
+            txt += `• Saldo Awal Terkumpul: ${formatRupiah(kasConfig.openingBalance)}\n`;
+            txt += `• Total Pemasukan: ${formatRupiah(totalIn)}\n`;
+            txt += `• Total Pengeluaran: ${formatRupiah(totalOut)}\n`;
+            txt += `• *SALDO KAS SAAT INI: ${formatRupiah(saldoAkhir)}*\n\n`;
+            txt += `*Mutasi Terakhir:*\n`;
+
+            const recent = getSortedWithRunningBalance().slice(-8).reverse();
+            recent.forEach(t => {
+                const sign = t.type === 'masuk' ? '+' : '-';
+                txt += `${formatDateID(t.date)} | ${sign}${formatRupiah(t.amount)} | ${t.desc} _(${t.recordedBy})_\n`;
+            });
+
+            document.getElementById('wa-textarea').value = txt;
+            document.getElementById('wa-send-link').href = 'https://wa.me/?text=' + encodeURIComponent(txt);
+            document.getElementById('wa-modal').classList.remove('hidden');
+            copyText(txt, 'Laporan Kas WA');
+        }
+
+        function closeWAModal() {
+            document.getElementById('wa-modal').classList.add('hidden');
+        }
+
+        function openPrintKasModal() {
+            const all = getSortedWithRunningBalance();
+            const totalIn = transactions.filter(t => t.type === 'masuk').reduce((s, t) => s + (Number(t.amount) || 0), 0);
+            const totalOut = transactions.filter(t => t.type === 'keluar').reduce((s, t) => s + (Number(t.amount) || 0), 0);
+            const saldoAkhir = (Number(kasConfig.openingBalance) || 0) + totalIn - totalOut;
+            const today = new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+            const html = `
+                <div style="font-family: Inter, sans-serif; color: #0f172a;">
+                    <div style="border-bottom:3px solid #801321; padding-bottom:12px; margin-bottom:16px; display:flex; justify-content:space-between;">
+                        <div>
+                            <h1 style="margin:0; font-size:19px; font-weight:800; color:#801321;">LAPORAN BUKU KAS KOMUNITAS</h1>
+                            <p style="margin:3px 0 0; font-size:12px; font-weight:600;">Fun Football Relawan biMBA AIUEO • VFC YPAI 1996</p>
+                        </div>
+                        <div style="text-align:right; font-size:11px; color:#475569;">
+                            <div>Dicetak: ${today}</div>
+                            <div>Pemegang Kas: <strong>${kasConfig.holder}</strong></div>
+                        </div>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:16px; font-size:11px;">
+                        <div style="border:1px solid #cbd5e1; padding:8px; border-radius:6px;">
+                            <div style="color:#64748b;">Saldo Awal</div><strong style="font-size:13px;">${formatRupiah(kasConfig.openingBalance)}</strong>
+                        </div>
+                        <div style="border:1px solid #cbd5e1; padding:8px; border-radius:6px;">
+                            <div style="color:#64748b;">Total Masuk</div><strong style="font-size:13px; color:#047857;">${formatRupiah(totalIn)}</strong>
+                        </div>
+                        <div style="border:1px solid #cbd5e1; padding:8px; border-radius:6px;">
+                            <div style="color:#64748b;">Total Keluar</div><strong style="font-size:13px; color:#dc2626;">${formatRupiah(totalOut)}</strong>
+                        </div>
+                        <div style="background:#064e3b; color:#fff; padding:8px; border-radius:6px;">
+                            <div style="color:#a7f3d0;">Saldo Akhir</div><strong style="font-size:13px; color:#facc15;">${formatRupiah(saldoAkhir)}</strong>
+                        </div>
+                    </div>
+
+                    <table style="width:100%; border-collapse:collapse; font-size:10.5px;">
+                        <thead>
+                            <tr style="background:#f8fafc;">
+                                <th style="padding:6px; border:1px solid #cbd5e1; text-align:left;">Tanggal</th>
+                                <th style="padding:6px; border:1px solid #cbd5e1; text-align:left;">Keterangan</th>
+                                <th style="padding:6px; border:1px solid #cbd5e1; text-align:left;">Pencatat</th>
+                                <th style="padding:6px; border:1px solid #cbd5e1; text-align:right;">Masuk</th>
+                                <th style="padding:6px; border:1px solid #cbd5e1; text-align:right;">Keluar</th>
+                                <th style="padding:6px; border:1px solid #cbd5e1; text-align:right;">Saldo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="background:#fefce8;">
+                                <td style="padding:6px; border:1px solid #cbd5e1;">${formatDateID(kasConfig.openingDate)}</td>
+                                <td style="padding:6px; border:1px solid #cbd5e1; font-weight:700;">Saldo Awal Terkumpul (${kasConfig.note})</td>
+                                <td style="padding:6px; border:1px solid #cbd5e1;">-</td>
+                                <td style="padding:6px; border:1px solid #cbd5e1; text-align:right;">-</td>
+                                <td style="padding:6px; border:1px solid #cbd5e1; text-align:right;">-</td>
+                                <td style="padding:6px; border:1px solid #cbd5e1; text-align:right; font-weight:700;">${formatRupiah(kasConfig.openingBalance)}</td>
+                            </tr>
+                            ${all.map(t => `
+                                <tr>
+                                    <td style="padding:6px; border:1px solid #cbd5e1;">${formatDateID(t.date)}</td>
+                                    <td style="padding:6px; border:1px solid #cbd5e1;"><strong>${t.category}</strong> — ${t.desc}</td>
+                                    <td style="padding:6px; border:1px solid #cbd5e1;">${t.recordedBy || '-'}</td>
+                                    <td style="padding:6px; border:1px solid #cbd5e1; text-align:right; color:#047857;">${t.type === 'masuk' ? formatRupiah(t.amount) : '-'}</td>
+                                    <td style="padding:6px; border:1px solid #cbd5e1; text-align:right; color:#dc2626;">${t.type === 'keluar' ? formatRupiah(t.amount) : '-'}</td>
+                                    <td style="padding:6px; border:1px solid #cbd5e1; text-align:right; font-weight:700;">${formatRupiah(t.runningBalance)}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+
+                    <div style="display:flex; justify-content:space-between; font-size:11px; margin-top:32px;">
+                        <div>Mengetahui, Ketua VFC biMBA<br><br><br>______________________</div>
+                        <div style="text-align:right;">Bendahara / Pemegang Kas<br><br><br><strong>${kasConfig.holder}</strong></div>
+                    </div>
+                </div>
+            `;
+
+            lastPrintHTML = html;
+            document.getElementById('print-sheet').innerHTML = html;
+            document.getElementById('print-modal').classList.remove('hidden');
+        }
+
+        function closePrintModal() {
+            document.getElementById('print-modal').classList.add('hidden');
+        }
+
+        async function exportKasPDF() {
+            const btn = document.getElementById('btn-pdf-kas');
+            const sheet = document.getElementById('print-sheet');
+            if (typeof html2pdf !== 'function') {
+                downloadPrintHTML();
+                return;
+            }
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Menyiapkan PDF...`;
+            try {
+                await html2pdf().set({
+                    margin: 10,
+                    filename: `Laporan-Kas-VFC-biMBA-${new Date().toISOString().slice(0, 10)}.pdf`,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                }).from(sheet).save();
+                showToast('File PDF Laporan Kas berhasil diunduh!', 'success');
+            } catch (err) {
+                downloadPrintHTML();
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-file-pdf mr-1"></i> Simpan PDF / Cetak`;
+            }
+        }
+
+        function downloadPrintHTML() {
+            const fullHtml = `<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><title>Laporan Kas VFC biMBA</title></head><body style="padding:24px;">${lastPrintHTML}<script>window.print();<\/script></body></html>`;
+            const blob = new Blob([fullHtml], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Cetak-LaporanKas-VFC-${new Date().toISOString().slice(0, 10)}.html`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('File cetak (.HTML) berhasil diunduh!', 'success');
+        }
+
+        window.onload = function() {
+            document.getElementById('tx-date').value = new Date().toISOString().slice(0, 10);
+            updateCategoryOptions();
+            updateAuthUI();
+            renderApp();
+        };
+    </script>
+
+    <!-- MODUL SINKRONISASI ONLINE REAL-TIME (BUKU KAS VFC biMBA) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // =========================================================================
+        // TEMPEL URL WEB APP GOOGLE APPS SCRIPT (/exec) DI SINI SEBELUM DEPLOY VERCEL:
+        // Contoh: 'https://script.google.com/macros/s/AKfycbxxxx.../exec'
+        // =========================================================================
+        const GAS_WEBAPP_URL = '';
+
+        const isInsideGAS = Boolean(window.google && window.google.script && window.google.script.run);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+
+        const seedTransactions = [
+            {
+                id: 'TX-SEED-01',
+                date: '2026-11-16',
+                type: 'masuk',
+                category: 'Setoran HTM Match',
+                method: 'Transfer BCA',
+                desc: 'Rekap HTM Match Pekan Lalu (6 Pemain Non-Relawan)',
+                amount: 120000,
+                recordedBy: 'Bendahara'
+            },
+            {
+                id: 'TX-SEED-02',
+                date: '2026-11-16',
+                type: 'keluar',
+                category: 'Konsumsi / Air Mineral',
+                method: 'Tunai',
+                desc: 'Air mineral gelas 2 dus untuk pertandingan',
+                amount: 45000,
+                recordedBy: 'Bendahara'
+            }
+        ];
+
+        let db = null;
+        let currentUser = null;
+        let gasReady = false;
+
+        function runGasServer(fnName, arg) {
+            return new Promise((resolve, reject) => {
+                const runner = window.google.script.run
+                    .withSuccessHandler(resolve)
+                    .withFailureHandler(reject);
+                if (typeof arg !== 'undefined') {
+                    runner[fnName](arg);
+                } else {
+                    runner[fnName]();
+                }
+            });
+        }
+
+        function setSyncBadge(status, label) {
+            const badge = document.getElementById('cloud-sync-badge');
+            if (!badge) return;
+            badge.title = label || 'Status Sinkronisasi';
+            if (status === 'online') {
+                badge.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)]"></span>`;
+            } else if (status === 'error') {
+                badge.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>`;
+            } else {
+                badge.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>`;
+            }
+        }
+
+        async function gasPost(payload) {
+            if (isInsideGAS) {
+                const data = await runGasServer('apiPostAction', payload);
+                if (!data || data.status !== 'ok') throw new Error((data && data.message) || 'Gagal simpan ke Google Sheet');
+                return data;
+            }
+            const res = await fetch(GAS_WEBAPP_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (data.status !== 'ok') throw new Error(data.message || 'Gagal simpan ke Google Sheet');
+            return data;
+        }
+
+        async function fetchGasKas() {
+            try {
+                const data = isInsideGAS
+                    ? await runGasServer('apiGetKas')
+                    : await (await fetch(`${GAS_WEBAPP_URL}?action=getKas&t=${Date.now()}`)).json();
+
+                if (data && data.status === 'ok') {
+                    gasReady = true;
+                    setSyncBadge('online', 'Terhubung ke Google Sheet (Real-Time)');
+                    if (data.kasConfig && typeof window.applyCloudKasConfig === 'function') {
+                        window.applyCloudKasConfig(data.kasConfig);
+                    }
+                    if (data.formSettings && data.formSettings.customVfcLogo) {
+                        const slot = document.getElementById('kas-vfc-logo-slot');
+                        if (slot) {
+                            slot.innerHTML = `<img src="${data.formSettings.customVfcLogo}" alt="Logo VFC" class="w-full h-full object-contain">`;
+                        }
+                    }
+                    if (typeof window.applyCloudTransactions === 'function') {
+                        window.applyCloudTransactions(data.transactions || []);
+                    }
+                }
+            } catch (err) {
+                console.error('Gagal memuat Buku Kas dari Google Sheet:', err);
+                setSyncBadge('error', 'Koneksi Google Sheet Terputus');
+            }
+        }
+
+        window.cloudKas = {
+            isReady: () => Boolean(((isInsideGAS || GAS_WEBAPP_URL) && gasReady) || (db && currentUser)),
+            saveConfig: async (cfg) => {
+                if (isInsideGAS || GAS_WEBAPP_URL) {
+                    try {
+                        await gasPost({ action: 'saveKasConfig', config: cfg });
+                        await fetchGasKas();
+                        return true;
+                    } catch (err) {
+                        console.error('GAS saveConfig error:', err);
+                        return false;
+                    }
+                }
+                if (!db || !currentUser) return false;
+                try {
+                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'kas_config', 'main'), cfg, { merge: true });
+                    return true;
+                } catch (err) {
+                    console.error('Firestore saveConfig error:', err);
+                    return false;
+                }
+            },
+            saveTransaction: async (tx) => {
+                if (isInsideGAS || GAS_WEBAPP_URL) {
+                    try {
+                        await gasPost({ action: 'saveTransaction', transaction: tx });
+                        await fetchGasKas();
+                        return true;
+                    } catch (err) {
+                        console.error('GAS saveTransaction error:', err);
+                        return false;
+                    }
+                }
+                if (!db || !currentUser) return false;
+                try {
+                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'kas_transactions', tx.id), tx, { merge: true });
+                    return true;
+                } catch (err) {
+                    console.error('Firestore saveTransaction error:', err);
+                    return false;
+                }
+            },
+            deleteTransaction: async (txId) => {
+                if (isInsideGAS || GAS_WEBAPP_URL) {
+                    try {
+                        await gasPost({ action: 'deleteTransaction', txId });
+                        await fetchGasKas();
+                        return true;
+                    } catch (err) {
+                        console.error('GAS deleteTransaction error:', err);
+                        return false;
+                    }
+                }
+                if (!db || !currentUser) return false;
+                try {
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'kas_transactions', txId));
+                    return true;
+                } catch (err) {
+                    console.error('Firestore deleteTransaction error:', err);
+                    return false;
+                }
+            },
+            importAll: async (cfg, txList) => {
+                if (isInsideGAS || GAS_WEBAPP_URL) {
+                    try {
+                        await gasPost({ action: 'importKasAll', config: cfg, transactions: txList });
+                        await fetchGasKas();
+                        return true;
+                    } catch (err) {
+                        console.error('GAS importAll error:', err);
+                        return false;
+                    }
+                }
+                if (!db || !currentUser) return false;
+                try {
+                    if (cfg) {
+                        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'kas_config', 'main'), cfg, { merge: true });
+                    }
+                    if (Array.isArray(txList)) {
+                        for (const tx of txList) {
+                            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'kas_transactions', tx.id), tx, { merge: true });
+                        }
+                    }
+                    return true;
+                } catch (err) {
+                    console.error('Firestore importAll error:', err);
+                    return false;
+                }
+            }
+        };
+
+        async function initCloudSync() {
+            // Prioritas 1: Berjalan langsung di Google Apps Script atau URL GAS diisi (Vercel)
+            if (isInsideGAS || GAS_WEBAPP_URL) {
+                setSyncBadge('loading', 'Menghubungkan ke Google Sheet...');
+                await fetchGasKas();
+                setInterval(fetchGasKas, 10000);
+                return;
+            }
+
+            if (!firebaseConfig) {
+                if (typeof window.applyCloudTransactions === 'function') {
+                    window.applyCloudTransactions(JSON.parse(JSON.stringify(seedTransactions)));
+                }
+                setSyncBadge('error', 'Mode Sesi Lokal');
+                return;
+            }
+
+            try {
+                const app = initializeApp(firebaseConfig);
+                const auth = getAuth(app);
+                db = getFirestore(app);
+
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    const cred = await signInWithCustomToken(auth, __initial_auth_token);
+                    currentUser = cred.user;
+                } else {
+                    const cred = await signInAnonymously(auth);
+                    currentUser = cred.user;
+                }
+
+                if (!currentUser) return;
+
+                const configRef = doc(db, 'artifacts', appId, 'public', 'data', 'kas_config', 'main');
+                onSnapshot(configRef, (snap) => {
+                    if (snap.exists()) {
+                        if (typeof window.applyCloudKasConfig === 'function') {
+                            window.applyCloudKasConfig(snap.data());
+                        }
+                    } else if (typeof window.getDefaultKasConfig === 'function') {
+                        setDoc(configRef, window.getDefaultKasConfig()).catch(() => {});
+                    }
+                }, (err) => console.error('Error listener kas_config:', err));
+
+                // Sinkronisasi Logo VFC yang diunggah dari Form Pendaftaran
+                const ffSettingsRef = doc(db, 'artifacts', appId, 'public', 'data', 'ff_settings', 'main');
+                onSnapshot(ffSettingsRef, (snap) => {
+                    if (snap.exists() && snap.data().customVfcLogo) {
+                        const slot = document.getElementById('kas-vfc-logo-slot');
+                        if (slot) {
+                            slot.innerHTML = `<img src="${snap.data().customVfcLogo}" alt="Logo VFC" class="w-full h-full object-contain">`;
+                        }
+                    }
+                }, () => {});
+
+                const txColRef = collection(db, 'artifacts', appId, 'public', 'data', 'kas_transactions');
+                let seededOnce = false;
+                onSnapshot(txColRef, async (snapshot) => {
+                    const list = [];
+                    snapshot.forEach(docSnap => list.push({ id: docSnap.id, ...docSnap.data() }));
+
+                    if (list.length === 0 && !seededOnce) {
+                        seededOnce = true;
+                        const existingSnap = await getDocs(txColRef);
+                        if (existingSnap.empty) {
+                            for (const seed of seedTransactions) {
+                                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'kas_transactions', seed.id), seed);
+                            }
+                            return;
+                        }
+                    }
+
+                    setSyncBadge('online', 'Sinkronisasi Online Aktif');
+                    if (typeof window.applyCloudTransactions === 'function') {
+                        window.applyCloudTransactions(list);
+                    }
+                }, (err) => {
+                    console.error('Error listener kas_transactions:', err);
+                    setSyncBadge('error', 'Koneksi Terputus');
+                });
+            } catch (err) {
+                console.error('Gagal inisialisasi sinkronisasi online:', err);
+                setSyncBadge('error', 'Gagal Terhubung');
+            }
+        }
+
+        initCloudSync();
+    </script>
+</body>
+</html>
