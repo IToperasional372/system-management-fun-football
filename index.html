@@ -91,8 +91,9 @@
             <div class="flex items-center gap-4">
                 <div class="w-16 h-16 sm:w-20 sm:h-20 shrink-0 flex items-center justify-center drop-shadow-md">
                     <img id="kas-vfc-logo-img"
-                         src="https://lh3.googleusercontent.com/d/1zKRREPZJzPbvH88NnrM7_Qi0Z5PViD5g"
-                         onerror="this.src='https://placehold.co/400x400/png?text=VFC'"
+                         src="https://lh3.googleusercontent.com/d/1zKRREPZJzPbvH88NnrM7_Qi0Z5PViD5g=s500"
+                         referrerpolicy="no-referrer"
+                         onerror="this.onerror=null; this.src='https://drive.google.com/thumbnail?id=1zKRREPZJzPbvH88NnrM7_Qi0Z5PViD5g&sz=w400';"
                          alt="Logo VFC biMBA" class="w-full h-full object-contain">
                 </div>
                 <div>
@@ -359,9 +360,14 @@
     <script>
         // =========================================================================
         // LOGO PATEN VIA GOOGLE DRIVE:
-        // Ganti ID file Google Drive logo VFC Anda di bawah ini.
+        // Menggunakan parameter =s500 & fallback thumbnail agar stabil di semua
+        // browser serta mendukung cetak PDF.
         // =========================================================================
-        const LOGO_VFC_URL = 'https://lh3.googleusercontent.com/d/1zKRREPZJzPbvH88NnrM7_Qi0Z5PViD5g';
+        const LOGO_BIMBA_ID = '1E9HTjJw0PVEORIqBLof8ifE1RLDk-2mF';
+        const LOGO_VFC_ID   = '1zKRREPZJzPbvH88NnrM7_Qi0Z5PViD5g';
+        const LOGO_BIMBA_URL = `https://lh3.googleusercontent.com/d/${LOGO_BIMBA_ID}=s500`;
+        const LOGO_VFC_URL   = `https://lh3.googleusercontent.com/d/${LOGO_VFC_ID}=s500`;
+        const LOGO_VFC_FALLBACK = `https://drive.google.com/thumbnail?id=${LOGO_VFC_ID}&sz=w400`;
 
         const defaultConfig = {
             openingBalance: 150000,
@@ -766,14 +772,20 @@
 
             const html = `
                 <div style="font-family: Inter, sans-serif; color: #0f172a;">
-                    <div style="border-bottom:3px solid #801321; padding-bottom:12px; margin-bottom:16px; display:flex; justify-content:space-between;">
-                        <div>
-                            <h1 style="margin:0; font-size:19px; font-weight:800; color:#801321;">LAPORAN BUKU KAS KOMUNITAS</h1>
-                            <p style="margin:3px 0 0; font-size:12px; font-weight:600;">Fun Football Relawan biMBA AIUEO • VFC YPAI 1996</p>
+                    <div style="border-bottom:3px solid #801321; padding-bottom:12px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; gap:12px;">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <img src="${LOGO_BIMBA_URL}" crossorigin="anonymous" referrerpolicy="no-referrer" style="width:44px; height:44px; object-fit:contain;" alt="Logo biMBA">
+                            <div>
+                                <h1 style="margin:0; font-size:18px; font-weight:800; color:#801321;">LAPORAN BUKU KAS KOMUNITAS</h1>
+                                <p style="margin:3px 0 0; font-size:11.5px; font-weight:600;">Fun Football Relawan biMBA AIUEO • VFC YPAI 1996</p>
+                            </div>
                         </div>
-                        <div style="text-align:right; font-size:11px; color:#475569;">
-                            <div>Dicetak: ${today}</div>
-                            <div>Pemegang Kas: <strong>${kasConfig.holder}</strong></div>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <div style="text-align:right; font-size:10.5px; color:#475569;">
+                                <div>Dicetak: ${today}</div>
+                                <div>Pemegang Kas: <strong>${kasConfig.holder}</strong></div>
+                            </div>
+                            <img src="${LOGO_VFC_URL}" crossorigin="anonymous" referrerpolicy="no-referrer" style="width:44px; height:44px; object-fit:contain;" alt="Logo VFC">
                         </div>
                     </div>
 
@@ -881,7 +893,14 @@
 
         window.onload = function() {
             const logoImg = document.getElementById('kas-vfc-logo-img');
-            if (logoImg) logoImg.src = LOGO_VFC_URL;
+            if (logoImg) {
+                logoImg.referrerPolicy = 'no-referrer';
+                logoImg.onerror = function() {
+                    this.onerror = null;
+                    this.src = LOGO_VFC_FALLBACK;
+                };
+                logoImg.src = LOGO_VFC_URL;
+            }
             document.getElementById('tx-date').value = new Date().toISOString().slice(0, 10);
             updateCategoryOptions();
             updateAuthUI();
