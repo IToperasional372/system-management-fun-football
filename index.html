@@ -24,14 +24,12 @@
                     colors: {
                         maroon: {
                             50: '#fdf2f3',
-                            100: '#fce7e9',
                             600: '#9b1b2b',
                             700: '#801321',
                             800: '#690f1b',
                             900: '#4e0a13'
                         },
                         trophy: {
-                            300: '#fde047',
                             400: '#facc15',
                             500: '#eab308'
                         }
@@ -58,9 +56,6 @@
             from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .logo-shadow {
-            filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35));
-        }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans min-h-screen antialiased">
@@ -68,26 +63,22 @@
     <!-- Toast Container -->
     <div id="toast-container" class="fixed top-4 right-4 z-[120] flex flex-col gap-2 max-w-sm w-[calc(100%-2rem)] pointer-events-none"></div>
 
-    <!-- HEADER MERAH MARUN -->
-    <header class="maroon-stripes text-white pt-5 pb-24 px-4 relative overflow-hidden shadow-lg">
-        <div class="absolute -right-10 -top-10 text-white/5 text-[180px] pointer-events-none select-none">
-            <i class="fa-solid fa-wallet"></i>
-        </div>
-
-        <div class="max-w-5xl mx-auto relative z-10">
-            <!-- Top Bar: Satu Baris Ringkas dengan Ikon Status di Kanan Atas -->
-            <div class="flex items-center justify-between gap-2 mb-6 flex-nowrap overflow-x-auto">
-                <span class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-[10px] sm:text-xs font-semibold tracking-wide text-trophy-400 uppercase whitespace-nowrap shrink-0">
-                    <i class="fa-solid fa-shield-halved"></i> Transparansi Keuangan • VFC YPAI 1996
+    <!-- HEADER -->
+    <header class="maroon-stripes text-white pt-5 pb-16 px-4 shadow-lg">
+        <div class="max-w-5xl mx-auto">
+            <!-- Top Bar: Satu Baris Ringkas -->
+            <div class="flex items-center justify-between gap-2 mb-5 flex-nowrap overflow-x-auto">
+                <span class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-white/10 border border-white/20 text-[10px] sm:text-xs font-bold text-trophy-400 uppercase whitespace-nowrap shrink-0">
+                    <i class="fa-solid fa-wallet"></i> Transparansi Keuangan • VFC YPAI 1996
                 </span>
                 <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
-                    <span id="admin-active-pill" class="hidden inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-emerald-600/90 text-white text-[11px] sm:text-xs font-bold whitespace-nowrap">
-                        <i class="fa-solid fa-user-check"></i> <span id="admin-active-name">Pengurus</span>
+                    <span id="admin-active-pill" class="hidden px-2.5 py-1 rounded-xl bg-amber-400/20 border border-amber-300/40 text-trophy-400 text-[11px] font-bold whitespace-nowrap">
+                        <i class="fa-solid fa-user-check mr-1"></i> <span id="admin-active-name">Pengurus</span>
                     </span>
                     <button type="button" id="btn-login-pengurus" onclick="openLoginModal()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 border border-white/20 text-white text-[11px] sm:text-xs font-bold transition cursor-pointer whitespace-nowrap">
-                        <i class="fa-solid fa-lock text-trophy-400"></i> Login Pengurus
+                        <i class="fa-solid fa-user-shield text-trophy-400"></i> Login Pengurus
                     </button>
-                    <button type="button" id="btn-logout-pengurus" onclick="logoutPengurus()" class="hidden inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-[11px] sm:text-xs font-bold transition cursor-pointer whitespace-nowrap">
+                    <button type="button" id="btn-logout-pengurus" onclick="logoutPengurus()" class="hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-[11px] sm:text-xs font-bold transition cursor-pointer whitespace-nowrap">
                         <i class="fa-solid fa-right-from-bracket"></i> Keluar
                     </button>
                     <span id="cloud-sync-badge" title="Menghubungkan sinkronisasi online..." class="w-7 h-7 rounded-full bg-black/25 border border-white/20 inline-flex items-center justify-center shrink-0">
@@ -96,188 +87,151 @@
                 </div>
             </div>
 
-            <!-- Title & Logos -->
-            <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
-                <div class="flex items-center gap-4">
-                    <div id="kas-vfc-logo-slot" class="w-16 h-16 shrink-0 logo-shadow flex items-center justify-center">
-                        <svg viewBox="0 0 120 120" class="w-full h-full">
-                            <path d="M22 22 L60 12 L98 22 L98 66 C98 92 60 110 60 110 C60 110 22 92 22 66 Z" fill="#1e3a8a" stroke="#dc2626" stroke-width="5"/>
-                            <path d="M26 26 L60 17 L94 26 L94 40 L26 40 Z" fill="#dc2626"/>
-                            <text x="60" y="35" text-anchor="middle" fill="#fde047" font-size="10" font-weight="800">VOLUNTEER</text>
-                            <circle cx="60" cy="64" r="17" fill="#f97316" stroke="#1e293b" stroke-width="2"/>
-                            <circle cx="54" cy="60" r="2.5" fill="#1e293b"/>
-                            <circle cx="66" cy="60" r="2.5" fill="#1e293b"/>
-                            <text x="60" y="102" text-anchor="middle" fill="#fde047" font-size="8.5" font-weight="800">YPAI 1996</text>
-                        </svg>
-                    </div>
-                    <div>
-                        <h1 class="font-display text-2xl sm:text-3xl font-extrabold tracking-tight">
-                            Buku Kas & <span class="text-trophy-400">Transparansi Keuangan</span>
-                        </h1>
-                        <p class="text-xs sm:text-sm text-red-100 mt-1">
-                            Fun Football Relawan biMBA AIUEO • Terbuka untuk seluruh anggota, dikelola bersama oleh pengurus
-                        </p>
-                    </div>
+            <!-- Judul & Logo Paten -->
+            <div class="flex items-center gap-4">
+                <div class="w-16 h-16 sm:w-20 sm:h-20 shrink-0 flex items-center justify-center drop-shadow-md">
+                    <img id="kas-vfc-logo-img"
+                         src="https://lh3.googleusercontent.com/d/1zKRREPZJzPbvH88NnrM7_Qi0Z5PViD5g"
+                         onerror="this.src='https://placehold.co/400x400/png?text=VFC'"
+                         alt="Logo VFC biMBA" class="w-full h-full object-contain">
                 </div>
-                <div class="inline-flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-black/25 border border-white/15 text-xs">
-                    <i class="fa-solid fa-building-columns text-trophy-400"></i>
-                    <div class="text-left">
-                        <span class="text-[10px] text-red-200 block uppercase font-bold">Pemegang Kas Saat Ini</span>
-                        <strong id="header-holder-name" class="text-white">Bendahara VFC biMBA</strong>
-                    </div>
+                <div>
+                    <h1 class="font-display text-2xl sm:text-3xl font-extrabold tracking-tight">
+                        Buku Kas <span class="text-trophy-400">Fun Football biMBA</span>
+                    </h1>
+                    <p class="text-xs sm:text-sm text-red-100/90 mt-1">
+                        Pemegang Kas: <strong id="header-holder-name" class="text-white">-</strong> • Terbuka untuk seluruh anggota VFC
+                    </p>
                 </div>
             </div>
         </div>
     </header>
 
     <!-- MAIN CONTENT -->
-    <main class="max-w-5xl mx-auto px-4 -mt-16 pb-16 relative z-20 space-y-6">
+    <main class="max-w-5xl mx-auto px-4 -mt-10 pb-16 space-y-5">
 
-        <!-- KPI SUMMARY CARDS -->
-        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="bg-emerald-900 text-white p-5 rounded-2xl shadow-lg border border-emerald-800">
-                <div class="flex items-center justify-between">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-200">Saldo Kas Saat Ini</span>
-                    <i class="fa-solid fa-vault text-trophy-400"></i>
-                </div>
-                <p id="kpi-current-balance" class="font-display text-2xl sm:text-3xl font-extrabold text-trophy-400 mt-2">Rp 0</p>
-                <p class="text-[11px] text-emerald-200 mt-1">Saldo awal + pemasukan − pengeluaran</p>
+        <!-- KPI CARDS -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+            <div class="bg-emerald-900 text-white p-4 rounded-2xl shadow-md">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-200 block">Saldo Kas Saat Ini</span>
+                <span id="kpi-current-balance" class="font-display text-2xl font-extrabold text-trophy-400 block mt-1">Rp 0</span>
+                <span class="text-[11px] text-emerald-200 block mt-1">Update real-time & transparan</span>
             </div>
-
-            <div class="bg-white p-5 rounded-2xl shadow-md border border-slate-200">
-                <div class="flex items-center justify-between">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Saldo Awal Terkumpul</span>
-                    <i class="fa-solid fa-piggy-bank text-slate-400"></i>
-                </div>
-                <p id="kpi-opening-balance" class="font-display text-2xl font-extrabold text-slate-900 mt-2">Rp 0</p>
-                <p id="kpi-opening-meta" class="text-[11px] text-slate-500 mt-1">Per tanggal -</p>
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">Saldo Awal Terkumpul</span>
+                <span id="kpi-opening-balance" class="font-display text-xl font-extrabold text-slate-900 block mt-1">Rp 0</span>
+                <span id="kpi-opening-meta" class="text-[11px] text-slate-500 block mt-1 truncate">-</span>
             </div>
-
-            <div class="bg-white p-5 rounded-2xl shadow-md border border-slate-200">
-                <div class="flex items-center justify-between">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Total Pemasukan</span>
-                    <i class="fa-solid fa-arrow-trend-up text-emerald-600"></i>
-                </div>
-                <p id="kpi-total-in" class="font-display text-2xl font-extrabold text-emerald-700 mt-2">Rp 0</p>
-                <p id="kpi-in-count" class="text-[11px] text-slate-500 mt-1">0 transaksi masuk</p>
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">Total Pemasukan</span>
+                <span id="kpi-total-in" class="font-display text-xl font-extrabold text-emerald-700 block mt-1">Rp 0</span>
+                <span id="kpi-in-count" class="text-[11px] text-slate-500 block mt-1">0 transaksi masuk</span>
             </div>
-
-            <div class="bg-white p-5 rounded-2xl shadow-md border border-slate-200">
-                <div class="flex items-center justify-between">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Total Pengeluaran</span>
-                    <i class="fa-solid fa-arrow-trend-down text-red-600"></i>
-                </div>
-                <p id="kpi-total-out" class="font-display text-2xl font-extrabold text-red-600 mt-2">Rp 0</p>
-                <p id="kpi-out-count" class="text-[11px] text-slate-500 mt-1">0 transaksi keluar</p>
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">Total Pengeluaran</span>
+                <span id="kpi-total-out" class="font-display text-xl font-extrabold text-red-600 block mt-1">Rp 0</span>
+                <span id="kpi-out-count" class="text-[11px] text-slate-500 block mt-1">0 transaksi keluar</span>
             </div>
         </section>
 
-        <!-- PANEL INPUT PENGURUS (Hanya tampil saat sudah Login Pengurus) -->
-        <section id="admin-controls-section" class="hidden bg-white rounded-3xl shadow-md border-2 border-maroon-100 p-5 sm:p-6 fade-in">
-            <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-100">
-                <div>
-                    <span class="text-[11px] font-extrabold uppercase tracking-wider text-maroon-700">Mode Pengurus Aktif</span>
-                    <h2 class="font-display text-lg font-extrabold text-slate-900">Catat Transaksi Kas & Pengaturan Saldo</h2>
-                </div>
+        <!-- GRAFIK PROPORSI ARUS KAS -->
+        <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4">
+            <div class="flex items-center justify-between text-xs font-bold mb-2">
+                <span class="text-emerald-700"><i class="fa-solid fa-arrow-trend-up mr-1"></i> Pemasukan (<span id="bar-in-pct">50%</span>)</span>
+                <span class="text-red-600">Pengeluaran (<span id="bar-out-pct">50%</span>) <i class="fa-solid fa-arrow-trend-down ml-1"></i></span>
+            </div>
+            <div class="w-full h-3 rounded-full bg-slate-100 overflow-hidden flex">
+                <div id="bar-in-fill" class="h-full bg-emerald-500 transition-all duration-300" style="width: 50%"></div>
+                <div id="bar-out-fill" class="h-full bg-red-500 transition-all duration-300" style="width: 50%"></div>
+            </div>
+        </section>
+
+        <!-- PANEL INPUT PENGURUS (HANYA TAMPIL SETELAH LOGIN) -->
+        <section id="admin-controls-section" class="hidden bg-white rounded-2xl border-2 border-maroon-600/20 shadow-md p-5 space-y-4 fade-in">
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100">
+                <h2 class="font-display text-base font-extrabold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square text-maroon-700"></i> Catat Transaksi Kas Baru
+                </h2>
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" onclick="openOpeningBalanceModal()" class="px-3 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-bold cursor-pointer">
-                        <i class="fa-solid fa-sliders mr-1"></i> Atur Saldo Awal Terkumpul
+                    <button type="button" onclick="openOpeningBalanceModal()" class="px-3 py-1.5 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-bold cursor-pointer">
+                        <i class="fa-solid fa-sliders mr-1"></i> Atur Saldo Awal
                     </button>
-                    <button type="button" onclick="exportBackupJSON()" class="px-3 py-1.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold cursor-pointer">
-                        <i class="fa-solid fa-download mr-1"></i> Backup .JSON
+                    <button type="button" onclick="exportBackupJSON()" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold cursor-pointer">
+                        <i class="fa-solid fa-download mr-1"></i> Backup JSON
                     </button>
-                    <label class="px-3 py-1.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold cursor-pointer">
-                        <i class="fa-solid fa-upload mr-1"></i> Impor .JSON
+                    <label class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold cursor-pointer">
+                        <i class="fa-solid fa-upload mr-1"></i> Impor JSON
                         <input type="file" accept=".json" class="hidden" onchange="importBackupJSON(event)">
                     </label>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 mt-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
                 <div>
                     <label class="block text-[11px] font-bold text-slate-500 mb-1">Tanggal</label>
-                    <input type="date" id="tx-date" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm font-medium">
+                    <input type="date" id="tx-date" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-bold text-slate-500 mb-1">Jenis Arus</label>
-                    <select id="tx-type" onchange="updateCategoryOptions()" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold bg-white">
-                        <option value="masuk">+ Pemasukan</option>
-                        <option value="keluar">- Pengeluaran</option>
+                    <label class="block text-[11px] font-bold text-slate-500 mb-1">Jenis</label>
+                    <select id="tx-type" onchange="updateCategoryOptions()" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold bg-white">
+                        <option value="masuk">Pemasukan (+)</option>
+                        <option value="keluar">Pengeluaran (-)</option>
                     </select>
                 </div>
                 <div>
                     <label class="block text-[11px] font-bold text-slate-500 mb-1">Kategori</label>
-                    <select id="tx-category" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm bg-white"></select>
+                    <select id="tx-category" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold bg-white"></select>
                 </div>
                 <div>
                     <label class="block text-[11px] font-bold text-slate-500 mb-1">Metode</label>
-                    <select id="tx-method" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm bg-white">
+                    <select id="tx-method" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold bg-white">
                         <option value="Transfer BCA">Transfer BCA</option>
                         <option value="Transfer Mandiri">Transfer Mandiri</option>
                         <option value="Tunai">Tunai / Cash</option>
+                        <option value="QRIS / E-Wallet">QRIS / E-Wallet</option>
                     </select>
                 </div>
                 <div>
                     <label class="block text-[11px] font-bold text-slate-500 mb-1">Nominal (Rp)</label>
-                    <input type="number" id="tx-amount" min="1000" step="1000" placeholder="50000" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold">
+                    <input type="number" id="tx-amount" placeholder="50000" min="1" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold">
                 </div>
                 <div class="flex items-end">
-                    <button type="button" onclick="addTransaction()" class="w-full py-2.5 px-4 rounded-xl bg-maroon-700 hover:bg-maroon-800 text-white text-xs sm:text-sm font-bold shadow-sm transition cursor-pointer">
+                    <button type="button" onclick="addTransaction()" class="w-full py-2 px-3 rounded-xl bg-maroon-700 hover:bg-maroon-800 text-white text-xs font-extrabold shadow-sm cursor-pointer">
                         <i class="fa-solid fa-plus mr-1"></i> Simpan Kas
                     </button>
                 </div>
-            </div>
-            <div class="mt-3">
-                <label class="block text-[11px] font-bold text-slate-500 mb-1">Keterangan Transaksi</label>
-                <input type="text" id="tx-desc" placeholder="Contoh: Sewa lapangan 2 jam / Air mineral 2 dus / Setoran HTM Match..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm">
+                <div class="sm:col-span-2 lg:col-span-6">
+                    <input type="text" id="tx-desc" placeholder="Keterangan transaksi (contoh: Sewa lapangan 2 jam, Setoran HTM Match, dll.)" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-medium">
+                </div>
             </div>
         </section>
 
-        <!-- BAR PROPORSI ARUS KAS & FILTER PUBLIK -->
-        <section class="bg-white rounded-3xl shadow-md border border-slate-200 p-5 sm:p-6 space-y-4">
-            <div class="flex flex-wrap items-center justify-between gap-3">
-                <div>
-                    <h2 class="font-display text-lg font-extrabold text-slate-900">Riwayat Mutasi Kas Komunitas</h2>
-                    <p class="text-xs text-slate-500">Setoran HTM yang diverifikasi Lunas di Form Pendaftaran otomatis masuk dengan lencana <span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">⚡ Auto Form</span>.</p>
+        <!-- FILTER & TABEL MUTASI -->
+        <section class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="p-4 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2.5">
+                <div class="flex flex-wrap items-center gap-2 flex-1 min-w-[220px]">
+                    <input type="text" id="filter-search" oninput="renderApp()" placeholder="Cari keterangan / pencatat..." class="px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm w-full sm:w-56">
+                    <select id="filter-month" onchange="renderApp()" class="px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm bg-white font-semibold">
+                        <option value="all">Semua Bulan</option>
+                    </select>
+                    <select id="filter-type" onchange="renderApp()" class="px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm bg-white font-semibold">
+                        <option value="all">Semua Jenis</option>
+                        <option value="masuk">Hanya Pemasukan</option>
+                        <option value="keluar">Hanya Pengeluaran</option>
+                    </select>
                 </div>
                 <div class="flex flex-wrap items-center gap-2">
                     <button type="button" onclick="copyReportToWA()" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm cursor-pointer">
                         <i class="fa-brands fa-whatsapp mr-1"></i> Salin Laporan WA
                     </button>
                     <button type="button" onclick="openPrintKasModal()" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-sm cursor-pointer">
-                        <i class="fa-solid fa-print mr-1 text-trophy-400"></i> Print / PDF Laporan
+                        <i class="fa-solid fa-print mr-1 text-trophy-400"></i> Cetak / PDF Kas
                     </button>
                 </div>
             </div>
 
-            <!-- Bar Proporsi -->
-            <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200/80">
-                <div class="flex justify-between text-xs font-bold mb-1.5">
-                    <span class="text-emerald-700">Pemasukan: <span id="bar-in-pct">0%</span></span>
-                    <span class="text-red-600">Pengeluaran: <span id="bar-out-pct">0%</span></span>
-                </div>
-                <div class="w-full h-3 rounded-full bg-slate-200 overflow-hidden flex">
-                    <div id="bar-in-fill" class="bg-emerald-500 h-full transition-all duration-500" style="width: 50%"></div>
-                    <div id="bar-out-fill" class="bg-red-500 h-full transition-all duration-500" style="width: 50%"></div>
-                </div>
-            </div>
-
-            <!-- Filter Bar -->
-            <div class="flex flex-wrap items-center gap-2">
-                <input type="text" id="filter-search" oninput="renderApp()" placeholder="Cari keterangan / pencatat..." class="px-3.5 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm flex-1 min-w-[180px]">
-                <select id="filter-month" onchange="renderApp()" class="px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm bg-white font-semibold">
-                    <option value="all">Semua Bulan</option>
-                </select>
-                <select id="filter-type" onchange="renderApp()" class="px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm bg-white font-semibold">
-                    <option value="all">Semua Jenis</option>
-                    <option value="masuk">Hanya Pemasukan</option>
-                    <option value="keluar">Hanya Pengeluaran</option>
-                </select>
-            </div>
-
-            <!-- Tabel Mutasi -->
-            <div class="overflow-x-auto border border-slate-200 rounded-2xl">
-                <table class="w-full text-left border-collapse min-w-[720px]">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse min-w-[700px]">
                     <thead>
                         <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">
                             <th class="py-3 px-4">Tanggal</th>
@@ -285,19 +239,17 @@
                             <th class="py-3 px-4">Dicatat Oleh</th>
                             <th class="py-3 px-4 text-right">Masuk</th>
                             <th class="py-3 px-4 text-right">Keluar</th>
-                            <th class="py-3 px-4 text-right">Saldo Berjalan</th>
+                            <th class="py-3 px-4 text-right">Saldo</th>
                             <th id="th-admin-action" class="hidden py-3 px-4 text-center">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody id="tx-tbody" class="divide-y divide-slate-100 text-xs sm:text-sm">
-                        <!-- Diisi otomatis via JS -->
-                    </tbody>
+                    <tbody id="tx-tbody" class="divide-y divide-slate-100 text-xs sm:text-sm"></tbody>
                 </table>
             </div>
         </section>
 
-        <footer class="text-center text-xs text-slate-400">
-            © 2026 Volunteer Football Community • biMBA AIUEO / YPAI 1996
+        <footer class="text-center text-xs text-slate-400 pt-2">
+            © 2026 Transparansi Keuangan Fun Football biMBA • Volunteer Football Community (YPAI 1996)
         </footer>
     </main>
 
@@ -311,21 +263,21 @@
             <div class="space-y-3">
                 <div>
                     <label class="block text-xs font-bold text-slate-600 mb-1">Nama / Jabatan Pengurus</label>
-                    <input type="text" id="login-name" placeholder="Contoh: Bendahara / Ketua" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm">
+                    <input type="text" id="login-name" placeholder="Contoh: Satria (Bendahara)" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-600 mb-1">PIN Pengurus (Default: 1996)</label>
                     <input type="password" id="login-pin" placeholder="Masukkan PIN..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-bold tracking-widest">
                 </div>
-                <p id="err-login" class="hidden text-xs font-bold text-red-600">Nama wajib diisi dan PIN harus sesuai.</p>
-                <button type="button" onclick="submitLogin()" class="w-full py-2.5 rounded-xl bg-maroon-700 hover:bg-maroon-800 text-white text-sm font-bold cursor-pointer">
-                    Masuk sebagai Pengurus
+                <p id="err-login" class="hidden text-xs font-bold text-red-600">Nama pengurus wajib diisi & PIN harus sesuai.</p>
+                <button type="button" onclick="submitLogin()" class="w-full py-2.5 rounded-xl bg-maroon-700 hover:bg-maroon-800 text-white text-sm font-bold cursor-pointer mt-2">
+                    Masuk Pengurus
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL ATUR SALDO AWAL TERKUMPUL -->
+    <!-- MODAL ATUR SALDO AWAL -->
     <div id="opening-modal" class="hidden fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-6">
             <div class="flex items-center justify-between mb-4">
@@ -334,80 +286,83 @@
             </div>
             <div class="space-y-3">
                 <div>
-                    <label class="block text-xs font-bold text-slate-600 mb-1">Nominal Saldo Awal Terkumpul (Rp)</label>
-                    <input type="number" id="open-amount" min="0" step="1000" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-bold">
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Nominal Saldo Awal (Rp)</label>
+                    <input type="number" id="open-amount" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm font-bold">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-600 mb-1">Per Tanggal</label>
-                    <input type="date" id="open-date" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm">
+                    <input type="date" id="open-date" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-600 mb-1">Nama Pemegang Kas</label>
-                    <input type="text" id="open-holder" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm">
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Pemegang Kas / Bendahara</label>
+                    <input type="text" id="open-holder" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-600 mb-1">Catatan Saldo Awal</label>
-                    <input type="text" id="open-note" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm">
+                    <input type="text" id="open-note" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-600 mb-1">Ganti PIN Pengurus (Opsional)</label>
-                    <input type="password" id="open-new-pin" placeholder="Kosongkan jika tetap" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm">
+                    <input type="password" id="open-new-pin" placeholder="Kosongkan jika tidak diganti" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm">
                 </div>
                 <button type="button" onclick="saveOpeningBalance()" class="w-full py-2.5 rounded-xl bg-maroon-700 hover:bg-maroon-800 text-white text-sm font-bold cursor-pointer mt-2">
-                    Simpan Saldo Awal Online
+                    Simpan Saldo Awal
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL PRATINJAU WHATSAPP -->
-    <div id="wa-modal" class="hidden fixed inset-0 z-[70] bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <!-- MODAL PRATINJAU WA -->
+    <div id="wa-modal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden">
             <div class="bg-emerald-700 text-white px-5 py-3.5 flex items-center justify-between">
-                <h3 class="font-display text-base font-extrabold"><i class="fa-brands fa-whatsapp mr-1.5"></i> Laporan Kas untuk WhatsApp</h3>
+                <h3 class="font-display text-base font-extrabold"><i class="fa-brands fa-whatsapp mr-1.5"></i> Laporan Kas WhatsApp</h3>
                 <button type="button" onclick="closeWAModal()" class="text-white/80 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <div class="p-5">
                 <textarea id="wa-textarea" rows="12" class="w-full p-3.5 rounded-xl border border-slate-300 bg-slate-50 font-mono text-xs text-slate-800"></textarea>
                 <div class="mt-4 flex justify-end gap-2">
-                    <button type="button" onclick="copyText(document.getElementById('wa-textarea').value, 'Laporan Kas WA')" class="px-4 py-2 rounded-xl bg-slate-800 text-white text-xs font-bold cursor-pointer">
-                        <i class="fa-regular fa-copy mr-1"></i> Salin Teks
+                    <button type="button" onclick="copyText(document.getElementById('wa-textarea').value, 'Laporan WA')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold cursor-pointer">
+                        Salin Teks
                     </button>
-                    <a id="wa-send-link" href="#" target="_blank" rel="noopener" class="px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold inline-flex items-center gap-1.5">
-                        <i class="fa-brands fa-whatsapp"></i> Kirim ke WA
+                    <a id="wa-send-link" href="#" target="_blank" rel="noopener" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold inline-flex items-center gap-1.5">
+                        <i class="fa-brands fa-whatsapp"></i> Kirim ke WhatsApp
                     </a>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL PRATINJAU CETAK & PDF -->
-    <div id="print-modal" class="hidden fixed inset-0 z-[70] bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4">
+    <!-- MODAL PRATINJAU CETAK PDF -->
+    <div id="print-modal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden">
             <div class="bg-slate-900 text-white px-5 py-3.5 flex flex-wrap items-center justify-between gap-2">
-                <h3 class="font-display text-sm sm:text-base font-extrabold"><i class="fa-solid fa-print text-trophy-400 mr-1.5"></i> Pratinjau Laporan Kas</h3>
+                <h3 class="font-display text-sm sm:text-base font-extrabold"><i class="fa-solid fa-print text-trophy-400 mr-1.5"></i> Pratinjau Cetak Laporan Kas</h3>
                 <div class="flex items-center gap-2">
-                    <button type="button" onclick="downloadPrintHTML()" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold cursor-pointer">
-                        <i class="fa-solid fa-file-code mr-1"></i> Unduh .HTML
+                    <button type="button" onclick="downloadKasPrintHTML()" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold cursor-pointer">
+                        Unduh .HTML
                     </button>
-                    <button type="button" id="btn-pdf-kas" onclick="exportKasPDF()" class="px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-extrabold cursor-pointer">
-                        <i class="fa-solid fa-file-pdf mr-1"></i> Simpan PDF / Cetak
+                    <button type="button" id="btn-kas-pdf" onclick="exportKasPDF()" class="px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-extrabold cursor-pointer">
+                        <i class="fa-solid fa-file-pdf mr-1"></i> Simpan PDF
                     </button>
-                    <button type="button" onclick="closePrintModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center cursor-pointer">
+                    <button type="button" onclick="closePrintKasModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center cursor-pointer">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
             </div>
             <div class="p-4 sm:p-6 bg-slate-200 overflow-y-auto flex-1">
-                <div id="print-sheet" class="bg-white max-w-3xl mx-auto p-6 sm:p-8 rounded-xl shadow-md text-slate-900"></div>
+                <div id="print-kas-sheet" class="bg-white max-w-3xl mx-auto p-6 sm:p-8 rounded-xl shadow-md"></div>
             </div>
         </div>
     </div>
 
-    <!-- ========================================================================= -->
-    <!-- JAVASCRIPT UTAMA BUKU KAS                                                 -->
-    <!-- ========================================================================= -->
     <script>
+        // =========================================================================
+        // LOGO PATEN VIA GOOGLE DRIVE:
+        // Ganti ID file Google Drive logo VFC Anda di bawah ini.
+        // =========================================================================
+        const LOGO_VFC_URL = 'https://lh3.googleusercontent.com/d/1zKRREPZJzPbvH88NnrM7_Qi0Z5PViD5g';
+
         const defaultConfig = {
             openingBalance: 150000,
             openingDate: '2026-11-01',
@@ -422,7 +377,6 @@
         let pendingDeleteTxId = null;
         let lastPrintHTML = '';
 
-        // Penghubung aman untuk modul sinkronisasi online
         window.getDefaultKasConfig = function() {
             return JSON.parse(JSON.stringify(defaultConfig));
         };
@@ -482,7 +436,6 @@
             document.body.removeChild(ta);
         }
 
-        // --- AUTH PENGURUS ---
         function openLoginModal() {
             document.getElementById('err-login').classList.add('hidden');
             document.getElementById('login-pin').value = '';
@@ -524,7 +477,6 @@
             document.getElementById('th-admin-action').classList.toggle('hidden', !isAdmin);
         }
 
-        // --- KATEGORI INPUT ---
         function updateCategoryOptions() {
             const type = document.getElementById('tx-type').value;
             const catEl = document.getElementById('tx-category');
@@ -534,7 +486,6 @@
             catEl.innerHTML = options.map(o => `<option value="${o}">${o}</option>`).join('');
         }
 
-        // --- CRUD TRANSAKSI ---
         async function addTransaction() {
             const date = document.getElementById('tx-date').value;
             const type = document.getElementById('tx-type').value;
@@ -572,7 +523,7 @@
 
             document.getElementById('tx-desc').value = '';
             document.getElementById('tx-amount').value = '';
-            showToast('Transaksi kas berhasil dicatat & tersinkronisasi online!', 'success');
+            showToast('Transaksi kas berhasil dicatat!', 'success');
         }
 
         function requestDeleteTx(id) {
@@ -595,7 +546,6 @@
             showToast('Transaksi berhasil dihapus dari buku kas.', 'success');
         }
 
-        // --- SALDO AWAL ---
         function openOpeningBalanceModal() {
             document.getElementById('open-amount').value = kasConfig.openingBalance;
             document.getElementById('open-date').value = kasConfig.openingDate;
@@ -636,10 +586,9 @@
             }
             closeOpeningBalanceModal();
             renderApp();
-            showToast('Saldo awal berhasil diperbarui secara online!', 'success');
+            showToast('Saldo awal berhasil diperbarui!', 'success');
         }
 
-        // --- BACKUP & IMPOR JSON ---
         function exportBackupJSON() {
             const payload = { exportedAt: new Date().toISOString(), exportedBy: currentAdmin || 'Pengurus', kasConfig, transactions };
             const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
@@ -679,7 +628,6 @@
             event.target.value = '';
         }
 
-        // --- RENDER UTAMA ---
         function getSortedWithRunningBalance() {
             const sorted = [...transactions].sort((a, b) => (a.date || '').localeCompare(b.date || '') || (a.id || '').localeCompare(b.id || ''));
             let running = Number(kasConfig.openingBalance) || 0;
@@ -723,7 +671,6 @@
             document.getElementById('bar-in-fill').style.width = inPct + '%';
             document.getElementById('bar-out-fill').style.width = outPct + '%';
 
-            // Filter tabel
             const q = (document.getElementById('filter-search').value || '').toLowerCase();
             const fMonth = document.getElementById('filter-month').value;
             const fType = document.getElementById('filter-type').value;
@@ -778,7 +725,6 @@
             }).join('');
         }
 
-        // --- LAPORAN WA & PRINT PDF ---
         function copyReportToWA() {
             const totalIn = transactions.filter(t => t.type === 'masuk').reduce((s, t) => s + (Number(t.amount) || 0), 0);
             const totalOut = transactions.filter(t => t.type === 'keluar').reduce((s, t) => s + (Number(t.amount) || 0), 0);
@@ -868,7 +814,7 @@
                             </tr>
                             ${all.map(t => `
                                 <tr>
-                                    <td style="padding:6px; border:1px solid #cbd5e1;">${formatDateID(t.date)}</td>
+                                    <td style="padding:6px; border:1px solid #cbd5e1; white-space:nowrap;">${formatDateID(t.date)}</td>
                                     <td style="padding:6px; border:1px solid #cbd5e1;"><strong>${t.category}</strong> — ${t.desc}</td>
                                     <td style="padding:6px; border:1px solid #cbd5e1;">${t.recordedBy || '-'}</td>
                                     <td style="padding:6px; border:1px solid #cbd5e1; text-align:right; color:#047857;">${t.type === 'masuk' ? formatRupiah(t.amount) : '-'}</td>
@@ -879,27 +825,27 @@
                         </tbody>
                     </table>
 
-                    <div style="display:flex; justify-content:space-between; font-size:11px; margin-top:32px;">
-                        <div>Mengetahui, Ketua VFC biMBA<br><br><br>______________________</div>
-                        <div style="text-align:right;">Bendahara / Pemegang Kas<br><br><br><strong>${kasConfig.holder}</strong></div>
+                    <div style="display:flex; justify-content:space-between; font-size:11px; margin-top:28px;">
+                        <div>Mengetahui Ketua Komunitas,<br><br><br>______________________</div>
+                        <div style="text-align:right;">Bendahara / Pemegang Kas,<br><br><br><strong>${kasConfig.holder}</strong></div>
                     </div>
                 </div>
             `;
 
             lastPrintHTML = html;
-            document.getElementById('print-sheet').innerHTML = html;
+            document.getElementById('print-kas-sheet').innerHTML = html;
             document.getElementById('print-modal').classList.remove('hidden');
         }
 
-        function closePrintModal() {
+        function closePrintKasModal() {
             document.getElementById('print-modal').classList.add('hidden');
         }
 
         async function exportKasPDF() {
-            const btn = document.getElementById('btn-pdf-kas');
-            const sheet = document.getElementById('print-sheet');
+            const btn = document.getElementById('btn-kas-pdf');
+            const sheet = document.getElementById('print-kas-sheet');
             if (typeof html2pdf !== 'function') {
-                downloadPrintHTML();
+                downloadKasPrintHTML();
                 return;
             }
             btn.disabled = true;
@@ -912,28 +858,30 @@
                     html2canvas: { scale: 2 },
                     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
                 }).from(sheet).save();
-                showToast('File PDF Laporan Kas berhasil diunduh!', 'success');
+                showToast('Laporan Kas PDF berhasil diunduh!', 'success');
             } catch (err) {
-                downloadPrintHTML();
+                downloadKasPrintHTML();
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = `<i class="fa-solid fa-file-pdf mr-1"></i> Simpan PDF / Cetak`;
+                btn.innerHTML = `<i class="fa-solid fa-file-pdf mr-1"></i> Simpan PDF`;
             }
         }
 
-        function downloadPrintHTML() {
+        function downloadKasPrintHTML() {
             const fullHtml = `<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><title>Laporan Kas VFC biMBA</title></head><body style="padding:24px;">${lastPrintHTML}<script>window.print();<\/script></body></html>`;
             const blob = new Blob([fullHtml], { type: 'text/html' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `Cetak-LaporanKas-VFC-${new Date().toISOString().slice(0, 10)}.html`;
+            a.download = `Cetak-Laporan-Kas-${new Date().toISOString().slice(0, 10)}.html`;
             a.click();
             URL.revokeObjectURL(url);
             showToast('File cetak (.HTML) berhasil diunduh!', 'success');
         }
 
         window.onload = function() {
+            const logoImg = document.getElementById('kas-vfc-logo-img');
+            if (logoImg) logoImg.src = LOGO_VFC_URL;
             document.getElementById('tx-date').value = new Date().toISOString().slice(0, 10);
             updateCategoryOptions();
             updateAuthUI();
@@ -1038,12 +986,6 @@
                     if (data.kasConfig && typeof window.applyCloudKasConfig === 'function') {
                         window.applyCloudKasConfig(data.kasConfig);
                     }
-                    if (data.formSettings && data.formSettings.customVfcLogo) {
-                        const slot = document.getElementById('kas-vfc-logo-slot');
-                        if (slot) {
-                            slot.innerHTML = `<img src="${data.formSettings.customVfcLogo}" alt="Logo VFC" class="w-full h-full object-contain">`;
-                        }
-                    }
                     if (typeof window.applyCloudTransactions === 'function') {
                         window.applyCloudTransactions(data.transactions || []);
                     }
@@ -1146,7 +1088,6 @@
         };
 
         async function initCloudSync() {
-            // Prioritas 1: Berjalan langsung di Google Apps Script atau URL GAS diisi (Vercel)
             if (isInsideGAS || GAS_WEBAPP_URL) {
                 setSyncBadge('loading', 'Menghubungkan ke Google Sheet...');
                 await fetchGasKas();
@@ -1187,17 +1128,6 @@
                         setDoc(configRef, window.getDefaultKasConfig()).catch(() => {});
                     }
                 }, (err) => console.error('Error listener kas_config:', err));
-
-                // Sinkronisasi Logo VFC yang diunggah dari Form Pendaftaran
-                const ffSettingsRef = doc(db, 'artifacts', appId, 'public', 'data', 'ff_settings', 'main');
-                onSnapshot(ffSettingsRef, (snap) => {
-                    if (snap.exists() && snap.data().customVfcLogo) {
-                        const slot = document.getElementById('kas-vfc-logo-slot');
-                        if (slot) {
-                            slot.innerHTML = `<img src="${snap.data().customVfcLogo}" alt="Logo VFC" class="w-full h-full object-contain">`;
-                        }
-                    }
-                }, () => {});
 
                 const txColRef = collection(db, 'artifacts', appId, 'public', 'data', 'kas_transactions');
                 let seededOnce = false;
